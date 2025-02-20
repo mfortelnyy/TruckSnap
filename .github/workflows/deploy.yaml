@@ -3,7 +3,7 @@ name: Deploy to Windows VPS
 on:
   push:
     branches:
-      - master
+      - trucksnap_deployment
 
 jobs:
   deploy:
@@ -21,9 +21,8 @@ jobs:
           port: ${{ secrets.PORT }}
           command_timeout: 30m            
           script: |
-                    C:\Users\Administrator\Documents\truckProRepo\truckPRO_api\deploy.bat
-  
-                    # Check if the bat file ran successfully
+            C:\Users\Administrator\Documents\TruckSnap_repo\deploy_script\deploy.bat
+            # Check if the bat file ran successfully
   check:
     runs-on: ubuntu-latest
     needs: deploy
