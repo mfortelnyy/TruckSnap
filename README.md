@@ -1,4 +1,9 @@
-# truckPRO_api
-Backend API for enforcing FMCSA safety regulations for commercial drivers. The API supports driver log management, compliance tracking, and company management.
+# TruckSnap - Truck Image Upload & Approval System
 
-A prevalent challenge in the trucking industry is that the responsibility for safety checks often falls on the drivers, and unfortunately, not all drivers adhere to these protocols honestly. Consequently, some drivers hit the road without completing all necessary safety procedures, leading to avoidable and costly repairs. Nobody regulates the safety check so this application enforces truck drivers to upload safety-check pictures of their trucks before starting their shifts. Fleet Managers gain access to real-time information on all drivers within their company. During a driver's shift, Fleet Managers will review the uploaded safety pictures to ensure compliance with safety standards. Throughout a driver's shift, Fleet Managers will periodically review the uploaded safety pictures to guarantee adherence to safety standards. In case any issues are detected, Fleet Managers can promptly contact drivers to prevent more costly repairs resulting from driver negligence.
+TruckSnap is part of our suite of applications designed for truck management. This application allows truck drivers to upload pictures of their vehicles, which are then reviewed and approved by managers. The system ensures efficient documentation and verification of truck conditions, streamlining fleet management.
+
+Key Features:
+- Drivers can upload images of trucks.
+- Managers review and approve/reject uploads.
+- Secure and organized image storage.
+- Optimized for easy and fast usage in trucking operations.
