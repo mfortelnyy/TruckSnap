@@ -6,4 +6,4 @@ Key Features:
 - Drivers can upload images of trucks.
 - Managers review and approve/reject uploads.
 - Secure and organized image storage.
--✅ Optimized for easy and fast usage in trucking operations.
+- Optimized for easy and fast usage in trucking operations.
