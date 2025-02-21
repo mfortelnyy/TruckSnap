@@ -215,5 +215,17 @@ namespace truckPRO_api.Controllers
             });
         }
 
+        [HttpPost("Test")]
+        public async  Task<IActionResult>  Test()
+        {
+            //var userId = User.Claims.FirstOrDefault(c => c.Type == "userId").Value;
+            //if(userId == null) return NotFound();
+            var res = await _userService.CreateTestUser();
+            Console.WriteLine(res);
+            if (res != null) return Ok("Test is suc");
+            else return BadRequest("Shit");
+        }
+
+
     }
 }
