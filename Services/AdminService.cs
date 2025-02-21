@@ -34,12 +34,6 @@ namespace truckPRO_api.Services
             return drivers;
         }
 
-        public async Task<List<LogEntry>> GetLogsByDriverId(int id)
-        {
-            var logs = context.LogEntry.Where(log => log.UserId == id).ToList() ?? throw new InvalidOperationException("No Logs found!");
-            return logs;
-        }
-
         public async Task<bool> CreateCompany(CompanyDTO companyDTO)
         {
             var newCompany = new Company()

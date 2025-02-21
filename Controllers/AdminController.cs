@@ -75,16 +75,6 @@ namespace truckPRO_api.Controllers
         }
 
 
-        [HttpGet]
-        [Route("/adm/getLogsByDriverId")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetLogsByDriverId([FromQuery] int driverId)
-        {
-            var logs = await adminService.GetLogsByDriverId(driverId);
-            if (logs == null) return NotFound("No Logs found!");
-            return Ok(logs);
-        }
-
         [HttpPost]
         [Route("/adm/createCompany")]
         [Authorize(Roles = "Admin")]

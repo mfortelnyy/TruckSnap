@@ -15,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add console logging
 builder.Logging.AddConsole();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .EnableSensitiveDataLogging()
+           .EnableDetailedErrors()
+);
 
 //Add Razor pages
 builder.Services.AddControllersWithViews();
@@ -22,12 +27,6 @@ builder.Services.AddControllersWithViews();
 
 // Add services to the container
 builder.Services.AddControllers();
-
-// Add DbContext for SQL Server
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
 
 // Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
@@ -47,8 +46,6 @@ builder.Services.AddScoped<S3Service>();
 // Register custom UserService for handling user-related operations
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddScoped<ILogEntryService, LogEntryService>();
-
 builder.Services.AddScoped<IManagerService, ManagerService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -56,8 +53,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddScoped<ISmsService, SmsService>();
-
-builder.Services.AddScoped<IPdfService, PdfService>();
 
 
 
@@ -99,9 +94,24 @@ builder.Services.AddAuthorization(auth =>
     });
 
 
-
 // Build the application
 var app = builder.Build();
+
+
+// Check database connectivity on startup
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (context.Database.CanConnect())
+    {
+        var dbName = context.Database.GetDbConnection().Database;
+        Console.WriteLine($"Successfully connected to the database: {dbName}");
+    }
+    else
+    {
+        Console.WriteLine("Unable to connect to the database.");
+    }
+}
 
 
 // Enable HTTPS redirection
