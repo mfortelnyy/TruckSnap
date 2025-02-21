@@ -14,28 +14,6 @@ namespace truckPRO_api.Services
         }
 
         
-        public async Task<List<LogEntry>> GetLogsByDriver(int driverId)
-        {
-            var user = await context.User.Where(u => u.Id == driverId).FirstOrDefaultAsync();
-            int? cid = user.CompanyId;
-            
-            // logs that are in-progress 
-            var inProgressLogs = await context.LogEntry
-                .Where(log => log.UserId == driverId && log.EndTime == null)
-                .ToListAsync();
-
-            // logs that are completed  and order them by endtime descending
-            var finishedLogs = await context.LogEntry
-                .Where(log => log.UserId == driverId && log.EndTime != null)
-                .OrderByDescending(log => log.EndTime)
-                .ToListAsync();
-
-            // combine in-progress logs with finished logs
-            var allLogs = inProgressLogs.Concat(finishedLogs).ToList();
-
-            return allLogs;
-        }
-
 
         public async Task<string> AddDriverToCompany(PendingUser pendingUser)
         {
@@ -63,36 +41,6 @@ namespace truckPRO_api.Services
             //if (res == null) throw new InvalidOperationException("PendingDriver can not be updated");
             return "Pending Driver succefully updated!";
 
-        }
-
-        public async Task<List<LogEntry>> GetAllActiveDrivingLogs(int companyId)
-        {
-            var drivingLogs = await context.LogEntry
-                .Include(log => log.User)
-                .Where(predicate: log => log.User.CompanyId == companyId && 
-                                                                (log.LogEntryType == LogEntryType.Driving || log.LogEntryType == LogEntryType.OnDuty) &&
-                                                                log.EndTime == null).ToListAsync();
-
-            if (drivingLogs == null || drivingLogs.Count == 0) throw new InvalidOperationException("No active drivers driving");
-            return drivingLogs;
-        }
-
-        public async Task<string> ApproveDrivingLogById(int logEntryId)
-        {
-            var logEntry = await context.LogEntry.FirstOrDefaultAsync(log => log.Id == logEntryId && log.LogEntryType == LogEntryType.Driving);
-            if (logEntry == null) throw new InvalidOperationException("Log could not be found!");
-            logEntry.IsApprovedByManager = true;
-            var res = await context.SaveChangesAsync(true);
-            return res != 0 ? "Log was successfully approved!" : "";
-        }
-
-        public async Task<List<string>> GetImagesOfDrivingLog(int logId)
-        {
-            var logentry = await context.LogEntry.FirstOrDefaultAsync(log => log.Id == logId);
-            if (logentry == null) throw new InvalidOperationException("Log could not be found!");
-            if (logentry.LogEntryType != LogEntryType.Driving) throw new InvalidOperationException("Log prvoided is not a driving Log");
-            return logentry.ImageUrls;
-            
         }
 
         public async Task<List<User>> GetRegisteredFromPending(int companyId) 
