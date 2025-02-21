@@ -216,5 +216,47 @@ namespace truckPRO_api.Services
             return _mapper.Map<UserDTO>(user);
             
         }
+
+        public async Task<string> CreateTestUser2()
+        {
+            var testComp = new Company
+            {
+                Name = "TestComp1",
+            };
+            await _context.Company.AddAsync(testComp);
+            await _context.SaveChangesAsync();
+
+            return $"Test user created with Id: {testComp.Id}";
+        }
+
+
+        public async Task<string> CreateTestUser()
+        {
+            try
+    {
+        var testUser = new User
+        {
+            FirstName = "Test",
+            LastName = "User",
+            Email = "testuser@example.com",
+            Phone = "1234567890",
+            Role = UserRole.Driver,
+            CompanyId = 1,
+            EmailVerified = true,
+            EmailVerificationToken = "182821",
+            Password = "TestPassword123!",
+        };
+
+        await _context.User.AddAsync(testUser);
+        await _context.SaveChangesAsync();
+        return $"Test user created with Id: {testUser.Id}";
+    }
+    catch (Exception e)
+    {
+        Console.Error.WriteLine(e.ToString());
+        throw;
+    }
+        }
+
     }
 }
