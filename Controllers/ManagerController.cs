@@ -123,96 +123,6 @@ namespace truckPRO_api.Controllers
         }
 
 
-        [HttpGet]
-        [Route("getAllActiveDrivingLogs")]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> GetAllActiveDrivingLogs()
-        {
-            try
-            {
-                var companyId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "companyId").Value);
-                var activeDrivingLogs = await managerService.GetAllActiveDrivingLogs(companyId);
-                return Ok(activeDrivingLogs);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpPost]
-        [Route("approveDrivingLogById")]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> ApproveDrivingLogById([FromQuery] int logEntryId)
-        {
-            try
-            {
-                var res = await managerService.ApproveDrivingLogById(logEntryId);
-                return Ok(new {message = res});
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(new {message = ex.Message});
-            }
-            catch (Exception ex)
-            {
-                return Accepted(new {message = ex.Message});
-            }
-        }
-
-
-
-
-        [HttpGet]
-        [Route("getLogsByDriverId")]
-        [Authorize(Roles = "Manager, Admin")]
-        public async Task<IActionResult> GetLogsByDriverId([FromQuery] int driverId)
-        {
-            //int companyId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "companyId").Value);
-            
-            //var role = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "role").Value);
-            try
-            {
-                var drivers = await managerService.GetLogsByDriver(driverId);
-                return Ok(drivers);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("getImagesOfDrivingLog")]
-        [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> GetImagesOfDrivingLog([FromQuery] int drivingLogId)
-        {
-            try
-            {
-                var res = await managerService.GetImagesOfDrivingLog(drivingLogId);
-                return Ok(res);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
         //returns list of users that registered from pendingUsers table
         [HttpGet]
         [Route("getRegisteredFromPending")]
@@ -356,13 +266,6 @@ namespace truckPRO_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-    
-
-
-
 
     }
 }
